@@ -98,5 +98,6 @@ stages:
             inputs:
               targetType: inline
               script: |
+                pwd
                 cd test
                 go test -v | tee  /home/mademi/reports/terratest_report.txt
