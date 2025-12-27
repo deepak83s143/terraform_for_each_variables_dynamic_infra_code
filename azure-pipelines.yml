@@ -47,3 +47,9 @@ stages:
                 source bin/activate
                 pip3 install checkov
                 sudo mv ./bin/checkov  /usr/bin/checkov
+          - task: Bash@3
+            displayName: Run Checkov
+            inputs:
+              targetType: inline
+              script: |
+                checkov -d --framwork terraform
