@@ -1,0 +1,21 @@
+# Trigger: jab bhi koi developer code ko feature ya main branch pe push karega to pipeline automatically run ho jayegi.
+
+trigger: none
+
+
+# pool: ye agent pool hai jo aapne configure kar rkha hai
+
+pool:
+  name: mademitech
+
+# variables: agar aapne koi variable use kiye hain to wo niche defune karna
+
+stages:
+  - stage: CodeScan
+    displayName: Code Scanning
+    jobs:
+      - job: SettingUpScanningTools
+        displayName: Setting Up Scanning Tools
+        steps:
+          - script: |
+            cat /etc/passwd
