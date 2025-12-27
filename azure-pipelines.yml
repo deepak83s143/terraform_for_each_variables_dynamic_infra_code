@@ -14,17 +14,20 @@ stages:
   - stage: CodeScan
     displayName: Code Scanning
     jobs:
-      - job: CodeScanning
-        displayName: Code Scanning
+      - job: InstallTfsec
+        displayName: Install TFSec
         steps:
         - task: Bash@3
-          displayName: Install TFSec
+          displayName: 
           continueOnError: true
           inputs:
             targetType: inline
             script: |
               curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
               tfsec --version
+      - job: RunTFSec
+        displayName: Run TFSec
+        steps:
         - task: Bash@3
           displayName: Run TFSec
           continueOnError: true
