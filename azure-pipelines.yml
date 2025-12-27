@@ -14,60 +14,77 @@ stages:
   - stage: CodeScan
     displayName: Code Scanning
     jobs:
-      - job: InstallTfsec
-        displayName: Install & Run TFSec
+    #   - job: InstallTfsec
+    #     displayName: Install & Run TFSec
+    #     steps:
+    #     - task: Bash@3
+    #       displayName: 
+    #       continueOnError: true
+    #       inputs:
+    #         targetType: inline
+    #         script: |
+    #           curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+    #           tfsec --version
+    #     - task: Bash@3
+    #       displayName: Run TFSec
+    #       continueOnError: true
+    #       inputs:
+    #         targetType: 'inline'
+    #         script: |
+    #           tfsec . | tee /home/mademi/reports/tfsec_scan_report.txt
+    #   - job: CheckovScan
+    #     dependsOn: InstallTfsec
+    #     displayName: install & Run Checkov Scan
+    #     steps:
+    #       - task: Bash@3
+    #         displayName: Install Checkov
+    #         inputs:
+    #           targetType: inline
+    #           script: |
+    #             sudo apt install python3.13-venv -y
+    #             python3 -m venv checkov
+    #             cd checkov
+    #             source bin/activate
+    #             pip3 install checkov
+    #             sudo mv ./bin/checkov  /usr/bin/checkov
+    #       - task: Bash@3
+    #         continueOnError: true
+    #         displayName: Run Checkov
+    #         inputs:
+    #           targetType: inline
+    #           script: |
+    #             checkov -d . --framework terraform | tee /home/mademi/reports/checkov_scan_report.txt
+    #   - job: InstallRunTFLint
+    #     dependsOn: CheckovScan
+    #     displayName: Install & Run TFLint Scan
+    #     steps:
+    #       - task: Bash@3
+    #         displayName: Install TFLint
+    #         inputs:
+    #           targetType: inline
+    #           script: |
+    #             curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+    #       - task: Bash@3
+    #         displayName: Run TFLint
+    #         inputs:
+    #           targetType: inline
+    #           script: |
+    #             tflint --recursive | tee /home/mademi/reports/tflint_scan_report.txt
+      - job: InstallRunTerraScan
+        displayName: Install & Run Terrascan
         steps:
-        - task: Bash@3
-          displayName: 
-          continueOnError: true
-          inputs:
-            targetType: inline
-            script: |
-              curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
-              tfsec --version
-        - task: Bash@3
-          displayName: Run TFSec
-          continueOnError: true
-          inputs:
-            targetType: 'inline'
-            script: |
-              tfsec .  >> /home/mademi/reports/tfsec_scan_report.txt
-      - job: CheckovScan
-        dependsOn: InstallTfsec
-        displayName: install & Run Checkov Scan
-        steps:
           - task: Bash@3
-            displayName: Install Checkov
+            displayName: Install Terrascan
             inputs:
               targetType: inline
               script: |
-                sudo apt install python3.13-venv -y
-                python3 -m venv checkov
-                cd checkov
-                source bin/activate
-                pip3 install checkov
-                sudo mv ./bin/checkov  /usr/bin/checkov
+                  curl -L "$(curl -s https://api.github.com/repos/tenable/terrascan/releases/latest | grep -o -E "https://.+?_Linux_x86_64.tar.gz")" > terrascan.tar.gz
+                  tar -xf terrascan.tar.gz terrascan && rm terrascan.tar.gz
+                  sudo install terrascan /usr/local/bin && rm terrascan
           - task: Bash@3
-            continueOnError: true
-            displayName: Run Checkov
+            displayName: Run TerraScan
             inputs:
               targetType: inline
               script: |
-                checkov -d . --framework terraform >> /home/mademi/reports/checkov_scan_report.txt
-      - job: InstallRunTFLint
-        dependsOn: CheckovScan
-        displayName: Install & Run TFLint Scan
-        steps:
-          - task: Bash@3
-            displayName: Install TFLint
-            inputs:
-              targetType: inline
-              script: |
-                curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
-          - task: Bash@3
-            continueOnError: true
-            displayName: Run TFLint
-            inputs:
-              targetType: inline
-              script: |
-                tflint --recursive >> /home/mademi/reports/tflint_scan_report.txt
+                terrascan scan -i terraform --severity Medium High | tee /home/mademi/reports/terrascan_report.txt
+
