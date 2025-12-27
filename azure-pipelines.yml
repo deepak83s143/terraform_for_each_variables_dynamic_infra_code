@@ -52,4 +52,4 @@ stages:
             inputs:
               targetType: inline
               script: |
-                checkov -d . 
+                checkov -d . --framework terraform
