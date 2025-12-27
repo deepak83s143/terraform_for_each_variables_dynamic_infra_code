@@ -33,6 +33,7 @@ stages:
             script: |
               tfsec .
       - job: CheckovScan
+        dependsOn: InstallTfsec
         displayName: install & Run Checkov Scan
         steps:
           - task: Bash@3
@@ -40,6 +41,7 @@ stages:
             inputs:
               targetType: inline
               script: |
+                sudo apt install python3.10-venv
                 python3 -m venv checkov
                 cd checkov
                 source bin/activate
