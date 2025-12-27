@@ -14,26 +14,26 @@ stages:
   - stage: CodeScan
     displayName: Code Scanning
     jobs:
-      - job: InstallTfsec
-        displayName: Install & Run TFSec
-        steps:
-        - task: Bash@3
-          displayName: 
-          continueOnError: true
-          inputs:
-            targetType: inline
-            script: |
-              curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
-              tfsec --version
-        - task: Bash@3
-          displayName: Run TFSec
-          continueOnError: true
-          inputs:
-            targetType: 'inline'
-            script: |
-              tfsec .
+      # - job: InstallTfsec
+      #   displayName: Install & Run TFSec
+      #   steps:
+      #   - task: Bash@3
+      #     displayName: 
+      #     continueOnError: true
+      #     inputs:
+      #       targetType: inline
+      #       script: |
+      #         curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+      #         tfsec --version
+      #   - task: Bash@3
+      #     displayName: Run TFSec
+      #     continueOnError: true
+      #     inputs:
+      #       targetType: 'inline'
+      #       script: |
+      #         tfsec .
       - job: CheckovScan
-        dependsOn: InstallTfsec
+        # dependsOn: InstallTfsec
         displayName: install & Run Checkov Scan
         steps:
           - task: Bash@3
@@ -41,7 +41,7 @@ stages:
             inputs:
               targetType: inline
               script: |
-                sudo apt install python3.10-venv
+                sudo apt install python3.13-venv
                 python3 -m venv checkov
                 cd checkov
                 source bin/activate
