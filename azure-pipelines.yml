@@ -99,5 +99,8 @@ stages:
               targetType: inline
               script: |
                 pwd
-                cd test
+                cd terratest
+                go mod init test
+                go get github.com/gruntwork-io/terratest@v0.46.16
+                go mod tidy
                 go test -v | tee  /home/mademi/reports/terratest_report.txt
