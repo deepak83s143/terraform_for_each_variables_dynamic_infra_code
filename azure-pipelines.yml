@@ -245,7 +245,8 @@ stages:
               cliProjectKey: 'mademi-tech-app'
               cliProjectName: 'Mademi Tech App'
               cliSources: '.'
-
+              extraProperties: |
+                sonar.branch.name=
           - task: SonarQubeAnalyze@8
             displayName: Run Analysis
             inputs:
