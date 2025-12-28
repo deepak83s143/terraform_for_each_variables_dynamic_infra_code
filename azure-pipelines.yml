@@ -133,6 +133,7 @@ stages:
           backendAzureRmContainerName: 'mademicontainer'
           backendAzureRmKey: 'infra1.mademi.tfstate'
     - job: TerraformValidate
+      dependsOn: TerraformInit
       displayName: Terraform Validate
       steps:
       - task: TerraformTask@5
@@ -153,6 +154,7 @@ stages:
           command: 'validate'
           workingDirectory: '$(WORK_DIR)'
     - job: TerraformPlan
+      dependsOn: TerraformValidate
       displayName: Terraform Plan
       steps:
       - task: TerraformTask@5
@@ -172,3 +174,17 @@ stages:
           command: 'plan'
           workingDirectory: '$(WORK_DIR)'
           environmentServiceNameAzureRM: 'mademitech_spn'
+  - stage: FinOps
+    dependsOn: InfraInitialize
+    displayName: FinOps
+    jobs:
+      - job: InfraCost
+        displayName: Infra Cost
+        steps:
+          - task: Bash@3
+            displayName: Check Infra Cost
+            inputs:
+              targetType: inline
+              script: |
+                cd $(System.DefaultWorkingDirectory)
+                infracost breakdown --path . | tee /home/mademi/reports/infracost.txt
