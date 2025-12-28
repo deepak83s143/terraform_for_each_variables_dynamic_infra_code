@@ -136,6 +136,17 @@ stages:
       displayName: Terraform Validate
       steps:
       - task: TerraformTask@5
+        displayName: Terraform Init
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: $(WORK_DIR)
+          backendServiceArm: 'mademitech_spn'
+          backendAzureRmResourceGroupName: 'mademi-rg'
+          backendAzureRmStorageAccountName: 'mademistg'
+          backendAzureRmContainerName: 'mademicontainer'
+          backendAzureRmKey: 'infra1.mademi.tfstate'
+      - task: TerraformTask@5
         displayName: Terraform Validate
         inputs:
           provider: 'azurerm'
@@ -144,6 +155,17 @@ stages:
     - job: TerraformPlan
       displayName: Terraform Plan
       steps:
+      - task: TerraformTask@5
+        displayName: Terraform Init
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: $(WORK_DIR)
+          backendServiceArm: 'mademitech_spn'
+          backendAzureRmResourceGroupName: 'mademi-rg'
+          backendAzureRmStorageAccountName: 'mademistg'
+          backendAzureRmContainerName: 'mademicontainer'
+          backendAzureRmKey: 'infra1.mademi.tfstate'
       - task: TerraformTask@5
         inputs:
           provider: 'azurerm'
