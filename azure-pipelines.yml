@@ -231,13 +231,13 @@ stages:
   #           environmentServiceNameAzureRM: 'mademitech_spn'
     - stage: SonarQubeScan
       displayName: SonarQube Scan
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
       jobs:
         - job: SonarQube
           displayName: SonarQube Analysis
           steps:
 
           - task: SonarQubePrepare@8
-            displayName: Prepare SonarQube
             inputs:
               SonarQube: 'sonarspn'
               scannerMode: 'cli'
@@ -245,14 +245,12 @@ stages:
               cliProjectKey: 'Continuous_Integration_Pipeline'
               cliProjectName: 'Continuous_Integration_Pipeline'
               cliSources: '.'
-              extraProperties: |
-                sonar.scm.disabled=true
+
           - task: SonarQubeAnalyze@8
-            displayName: Run Analysis
             inputs:
               jdkversion: 'JAVA_HOME_17_X64'
 
           - task: SonarQubePublish@8
-            displayName: Publish Quality Gate
             inputs:
               pollingTimeoutSec: '300'
+
