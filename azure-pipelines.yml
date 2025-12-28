@@ -112,6 +112,7 @@ stages:
             inputs:
               targetType: inline
               script: |
+                cd /opt/ado-agent/_work/12/s/terratest
                 go test -v | tee  /home/mademi/reports/terratest_report.txt
   - stage: InfraInitialize
     dependsOn: TerraTest
