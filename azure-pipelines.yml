@@ -231,6 +231,7 @@ stages:
   #           environmentServiceNameAzureRM: 'mademitech_spn'
     - stage: SonarQubeScan
       condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+      pool: mademitech
       displayName: SonarQube Scan
       jobs:
         - job: SonarQube
