@@ -231,12 +231,10 @@ stages:
   #           environmentServiceNameAzureRM: 'mademitech_spn'
     - stage: SonarQubeScan
       displayName: SonarQube Scan
-      condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
       jobs:
         - job: SonarQube
           displayName: SonarQube Analysis
           steps:
-
           - task: SonarQubePrepare@8
             inputs:
               SonarQube: 'sonarspn'
@@ -245,10 +243,6 @@ stages:
               cliProjectKey: 'Continuous_Integration_Pipeline'
               cliProjectName: 'Continuous_Integration_Pipeline'
               cliSources: '.'
-              extraProperties: |
-                sonar.branch.name=
-                sonar.scm.disabled=true
-
           - task: SonarQubeAnalyze@8
             inputs:
               jdkversion: 'JAVA_HOME_17_X64'
