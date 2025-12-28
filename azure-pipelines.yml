@@ -187,4 +187,6 @@ stages:
               targetType: inline
               script: |
                 cd $(System.DefaultWorkingDirectory)
+                pwd
+                echo $INFRACOST_API_KEY
                 infracost breakdown --path . | tee /home/mademi/reports/infracost.txt
