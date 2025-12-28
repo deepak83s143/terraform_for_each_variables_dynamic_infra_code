@@ -234,27 +234,16 @@ stages:
       displayName: SonarQube Scan
       jobs:
         - job: SonarQube
-          pool:
-            name: mademitech
-          displayName: SonarQube Analysis
           steps:
-            - checkout: self
-              fetchDepth: 0
-
-            - script: |
-                which java
-                readlink -f $(which java)
-
-                export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
-                export PATH=$JAVA_HOME/bin:$PATH
-
-                echo "Resolved JAVA_HOME=$JAVA_HOME"
-                java -version
-                sonar-scanner \
-                  -Dsonar.projectKey=Continuous_Integration_Pipeline \
-                  -Dsonar.projectName="Continuous Integration Pipeline" \
-                  -Dsonar.sources=. \
-                  -Dsonar.host.url=http://103.219.142.175:9090 \
-                  -Dsonar.login=sqa_31b75a554fef21b104173147cf512ae42773e7f5 -X
+            - task: Bash@3
+              inputs:
+                targetType: inline
+                script: |
+                  sonar-scanner \
+                    -Dsonar.projectKey=Continuous_Integration_Pipeline \
+                    -Dsonar.projectName="Continuous Integration Pipeline" \
+                    -Dsonar.sources=. \
+                    -Dsonar.host.url=http://103.219.142.175:9090 \
+                    -Dsonar.login=sqa_31b75a554fef21b104173147cf512ae42773e7f5 -X
 
 
