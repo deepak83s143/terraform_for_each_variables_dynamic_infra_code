@@ -230,6 +230,7 @@ stages:
   #           commandOptions: '-auto-approve'
   #           environmentServiceNameAzureRM: 'mademitech_spn'
     - stage: SonarQubeScan
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
       displayName: SonarQube Scan
       jobs:
         - job: SonarQube
