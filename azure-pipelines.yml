@@ -242,8 +242,8 @@ stages:
               SonarQube: 'sonarspn'
               scannerMode: 'cli'
               configMode: 'manual'
-              cliProjectKey: 'mademi-tech-app'
-              cliProjectName: 'Mademi Tech App'
+              cliProjectKey: 'Continuous_Integration_Pipeline'
+              cliProjectName: 'Continuous_Integration_Pipeline'
               cliSources: '.'
               extraProperties: |
                 sonar.scm.disabled=true
