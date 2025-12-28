@@ -98,8 +98,8 @@ stages:
             inputs:
               targetType: inline
               script: |
-                pwd
                 cd /opt/ado-agent/_work/12/s/terratest
+                pwd
                 go mod init test
                 go get github.com/gruntwork-io/terratest@v0.46.16
                 go mod tidy
