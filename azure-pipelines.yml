@@ -242,9 +242,8 @@ stages:
               fetchDepth: 0
 
             - script: |
-                pwd
-                cd $(System.DefaultWorkingDirectory)
-                which sonar-scanner
+                export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+                export PATH=$JAVA_HOME/bin:$PATH
                 sonar-scanner \
                   -Dsonar.projectKey=Continuous_Integration_Pipeline \
                   -Dsonar.projectName="Continuous Integration Pipeline" \
