@@ -188,5 +188,6 @@ stages:
               script: |
                 cd $(System.DefaultWorkingDirectory)
                 pwd
+                export INFRACOST_API_KEY="ico-QV2Rf1mTKil4jSPTOt8u2OCxaRxpJi5a"
                 echo $INFRACOST_API_KEY
                 infracost breakdown --path . | tee /home/mademi/reports/infracost.txt
