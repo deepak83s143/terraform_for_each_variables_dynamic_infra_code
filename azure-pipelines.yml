@@ -229,20 +229,29 @@ stages:
   #           workingDirectory: '$(System.DefaultWorkingDirectory)/main'
   #           commandOptions: '-auto-approve'
   #           environmentServiceNameAzureRM: 'mademitech_spn'
-  - stage: SonarQubeScan
-    displayName: Sonarqube Scan
-    jobs:
-      - job: SonarQube
-        displayName: Sonar Qube
-        steps:
-        - task: SonarQubePrepare@8
-          inputs:
-            SonarQube: 'sonarspn'
-            scannerMode: 'cli'
-            configMode: 'file'
-        - task: SonarQubePublish@8
-          inputs:
-            pollingTimeoutSec: '300'
-        - task: SonarQubeAnalyze@8
-          inputs:
-            jdkversion: 'JAVA_HOME_17_X64'
+    - stage: SonarQubeScan
+      displayName: SonarQube Scan
+      jobs:
+        - job: SonarQube
+          displayName: SonarQube Analysis
+          steps:
+
+          - task: SonarQubePrepare@8
+            displayName: Prepare SonarQube
+            inputs:
+              SonarQube: 'sonarspn'
+              scannerMode: 'cli'
+              configMode: 'manual'
+              cliProjectKey: 'mademi-tech-app'
+              cliProjectName: 'Mademi Tech App'
+              cliSources: '.'
+
+          - task: SonarQubeAnalyze@8
+            displayName: Run Analysis
+            inputs:
+              jdkversion: 'JAVA_HOME_17_X64'
+
+          - task: SonarQubePublish@8
+            displayName: Publish Quality Gate
+            inputs:
+              pollingTimeoutSec: '300'
