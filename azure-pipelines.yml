@@ -191,3 +191,41 @@ stages:
                 export INFRACOST_API_KEY="ico-QV2Rf1mTKil4jSPTOt8u2OCxaRxpJi5a"
                 echo $INFRACOST_API_KEY
                 infracost breakdown --path . | tee /home/mademi/reports/infracost.txt
+  - stage: ManualValidation
+    dependsOn: FinOps
+    displayName: Manual Validation
+    jobs:
+      - job: ManualValidation
+        displayName: Manual Validation
+        pool: server
+        steps:
+          - task: ManualValidation@0
+            displayName: Manual Validation
+            inputs:
+              notifyUsers: 'deepak83s143@gmail.com'
+  - stage: InfraDeploymentOnAzure
+    dependsOn: ManualValidation
+    displayName: Infra Deploy On Azure
+    jobs:
+      - job: TerraformApply
+        displayName: Terraform Apply
+        steps:
+        - task: TerraformTask@5
+          displayName: Terraform Init
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: $(WORK_DIR)
+            backendServiceArm: 'mademitech_spn'
+            backendAzureRmResourceGroupName: 'mademi-rg'
+            backendAzureRmStorageAccountName: 'mademistg'
+            backendAzureRmContainerName: 'mademicontainer'
+            backendAzureRmKey: 'infra1.mademi.tfstate'
+        - task: TerraformTask@5
+          displayName: Terraform Apply
+          inputs:
+            provider: 'azurerm'
+            command: 'apply'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/main'
+            commandOptions: '-auto-approve'
+            environmentServiceNameAzureRM: 'mademitech_spn'
