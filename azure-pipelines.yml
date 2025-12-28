@@ -245,6 +245,9 @@ stages:
               cliProjectKey: 'Continuous_Integration_Pipeline'
               cliProjectName: 'Continuous_Integration_Pipeline'
               cliSources: '.'
+              extraProperties: |
+                sonar.branch.name=
+                sonar.scm.disabled=true
 
           - task: SonarQubeAnalyze@8
             inputs:
