@@ -240,16 +240,23 @@ stages:
             inputs:
               targetType: inline
               script: |
-                export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
+                set -e
+
+                export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
                 export PATH=$JAVA_HOME/bin:$PATH
+
+                # Hard bind Java for SonarScanner
+                export SONAR_SCANNER_OPTS="-Djava.home=$JAVA_HOME"
+
                 echo "JAVA_HOME=$JAVA_HOME"
+                which java
+                ls -l $JAVA_HOME/bin/java
                 java -version
-                sonar-scanner -D sonar.host.url=http://103.219.142.175:9090 -D sonar.login=sqa_31b75a554fef21b104173147cf512ae42773e7f5 -D sonar.projectKey=Continuous_Integration_Pipeline -X
-                # sonar-scanner \
-                # -Dsonar.projectKey=Continuous_Integration_Pipeline \
-                # -Dsonar.projectName="Continuous Integration Pipeline"  \
-                # -Dsonar.sources=. \
-                # -Dsonar.coverage.exclusions=main/*.tf,modules/*.tf,terratest/*.go \
-                # -Dsonar.host.url=http://103.219.142.175:9090  \
-                # -Dsonar.login=sqa_31b75a554fef21b104173147cf512ae42773e7f5 -X
+
+                # Call scanner via absolute path (IMPORTANT)
+                /usr/local/bin/sonar-scanner \
+                  -Dsonar.host.url=http://103.219.142.175:9090 \
+                  -Dsonar.login=sqa_31b75a554fef21b104173147cf512ae42773e7f5 \
+                  -Dsonar.projectKey=Continuous_Integration_Pipeline \
+                  -X
 
