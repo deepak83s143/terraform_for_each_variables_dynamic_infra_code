@@ -240,7 +240,9 @@ stages:
                 targetType: inline
                 script: |
                   export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-                  # export PATH=$JAVA_HOME/bin:$PATH
+                  export PATH=$JAVA_HOME/bin:$PATH
+
+                  java -version
 
                   sonar-scanner \
                     -Dsonar.projectKey=Continuous_Integration_Pipeline \
