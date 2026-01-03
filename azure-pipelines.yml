@@ -235,21 +235,20 @@ stages:
       jobs:
         - job: SonarQube
           steps:
-            - task: Bash@3
-              inputs:
-                targetType: inline
-                script: |
-                  export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64/bin/java
+          - task: Bash@3
+            displayName: SonarQube Scan
+            inputs:
+              targetType: inline
+              script: |
+                unset JAVA_HOME
 
-                  export PATH=$JAVA_HOME/bin:$PATH
+                java -version
 
-                  java -version
-
-                  sonar-scanner \
-                    -Dsonar.projectKey=Continuous_Integration_Pipeline \
-                    -Dsonar.projectName="Continuous Integration Pipeline" \
-                    -Dsonar.sources=. \
-                    -Dsonar.host.url=http://103.219.142.175:9090 \
-                    -Dsonar.login=sqa_31b75a554fef21b104173147cf512ae42773e7f5 -X
+                sonar-scanner \
+                  -Dsonar.projectKey=Continuous_Integration_Pipeline \
+                  -Dsonar.projectName="Continuous Integration Pipeline" \
+                  -Dsonar.sources=. \
+                  -Dsonar.host.url=http://103.219.142.175:9090 \
+                  -Dsonar.login=sqa_31b75a554fef21b104173147cf512ae42773e7f5 -X
 
 
