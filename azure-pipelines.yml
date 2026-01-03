@@ -257,6 +257,6 @@ stages:
                 /usr/local/bin/sonar-scanner \
                   -Dsonar.host.url=https://sonarqube.devopsinsiders.com/ \
                   -Dsonar.login=sqp_b3c32ff25c77eb250b55ac69585889a80d4672d5 \
-                  -Dsonar.projectKey=B17_G25_Deepak Sharma \
+                  -Dsonar.projectKey="B17_G25_Deepak Sharma" \
                   -X
 
