@@ -240,6 +240,8 @@ stages:
             inputs:
               targetType: inline
               script: |
+                export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64/bin/java"
+                echo $JAVA_HOME
                 sonar-scanner -D sonar.host.url=http://103.219.142.175:9090 -D sonar.login=sqa_31b75a554fef21b104173147cf512ae42773e7f5 -D sonar.projectKey=Continuous_Integration_Pipeline -X
                 # sonar-scanner \
                 # -Dsonar.projectKey=Continuous_Integration_Pipeline \
